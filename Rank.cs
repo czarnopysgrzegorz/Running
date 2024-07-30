@@ -13,4 +13,3 @@ public class Rank : World
         Division = "Undefined";
     }
 }
-//elo
