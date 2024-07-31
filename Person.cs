@@ -40,6 +40,7 @@ public class Person : World
     }
     public void AddRun(Person person)
     {
+        Rank.setOwnerForRank(person);
         int which = WhichRun();
         if (which == 1)
         {
@@ -127,6 +128,11 @@ public class Person : World
     {
         Console.WriteLine("Was it a Zone 2 run? 1 - yes, 2 - no");
         string read = Console.ReadLine();
+        while (read.CompareTo("1") != 0 && read.CompareTo("2") != 0)
+        {
+            Console.WriteLine("Type the correct number");
+            read = Console.ReadLine();
+        }
         if (read.CompareTo("1") == 0)
         {
             return 1;
@@ -135,11 +141,7 @@ public class Person : World
         {
             return 2;
         }
-        else
-        {
-            Console.WriteLine("Type the correct number");
-            return -1;
-        }
+        return 0;
     }
     public void showPR()
     {

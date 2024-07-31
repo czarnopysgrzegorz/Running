@@ -2,8 +2,12 @@ namespace Running;
 
 public class Login : World
 {
-    public void LoginisLive()
+    public void LoginisLive(int turnoff)
     {
+        if (turnoff == 1)
+        {
+            return;
+        }
         CreateDataFolder();
         bool running = true;
         while (running)

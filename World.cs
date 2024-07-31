@@ -1,3 +1,6 @@
+using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.Reflection;
 namespace Running;
 
 public class World
@@ -75,6 +78,11 @@ public class World
     {
         Console.WriteLine("Type your name: ");
         string name = Console.ReadLine();
+        while (!Regex.IsMatch(name, @"^[a-zA-Z]+$"))
+        {
+            Console.WriteLine("Type the correct name using only letters");
+            name = Console.ReadLine();
+        }
         int ind = ContainsPerson(name);
         if (ind == -1)
         {

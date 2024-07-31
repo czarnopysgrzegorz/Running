@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 namespace Running;
 
 public abstract class Run : World
@@ -50,15 +51,15 @@ public abstract class Run : World
     {
         Console.WriteLine("What was your distance?");
         string reed = Console.ReadLine();
+        while (!Regex.IsMatch(reed, @"^[0-9,]+$"))
+        {
+            Console.WriteLine("Invalid distance input. Try: x,xx");
+            reed = Console.ReadLine();
+        }
         if (double.TryParse(reed, out double distanceValue) && distanceValue > 0)
         {
             double buffer = BufferDistance(distanceValue);
             run.Distance = buffer;
-            return;
-        }
-        else
-        {
-            Console.WriteLine("Invalid distance input.");
             return;
         }
     }
@@ -67,16 +68,16 @@ public abstract class Run : World
     {
         Console.WriteLine("What was your time?");
         string reed2 = Console.ReadLine();
+        while (!Regex.IsMatch(reed2, @"^[0-9,]+$"))
+        {
+            Console.WriteLine("Invalid time input. Try: x,xx");
+            reed2 = Console.ReadLine();
+        }
         if (double.TryParse(reed2, out double timeValue) && timeValue > 0)
         {
             timeValue = Math.Round(timeValue, 2);
             int outTime = ConvertTimeToSeconds(timeValue);
             run.Time = outTime;
-            return;
-        }
-        else
-        {
-            Console.WriteLine("Invalid time input.");
             return;
         }
     }
@@ -92,14 +93,14 @@ public abstract class Run : World
     {
         Console.WriteLine("What was your max BPM?");
         string reed3 = Console.ReadLine();
-        if (int.TryParse(reed3, out int BPMValue) && BPMValue > 26 && BPMValue < 300)
-        {
-            normal.MaxBPM = BPMValue;
-            return;
-        }
-        else
+        while (!Regex.IsMatch(reed3, @"^[0-9]+$"))
         {
             Console.WriteLine("Invalid BPM input.");
+            reed3 = Console.ReadLine();
+        }
+        if (int.TryParse(reed3, out int BPMValuee))
+        {
+            normal.MaxBPM = BPMValuee;
             return;
         }
     }

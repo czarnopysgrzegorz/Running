@@ -28,6 +28,7 @@ public class Normal : Run
         AddBPM(this);
         AddDate(this);
         owner.Runs.Add(this);
+        owner.Rank.UpdateElo(this);
         
     }
 

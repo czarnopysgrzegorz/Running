@@ -25,14 +25,15 @@ public class Usage : World
             {
                 throw new ArgumentNullException(nameof(person.Rank.Division), "Person's rank division cannot be null.");
             }
-            Console.WriteLine($"{person.Name} - {person.Rank.Division}");
+            Console.WriteLine($"{person.Name} - {person.Rank.Elo}");
             Console.WriteLine("1. Add a run");
             Console.WriteLine("2. Remove last run");
             Console.WriteLine("3. Show all runs");
             Console.WriteLine("4. Show all normal runs");
             Console.WriteLine("5. Show all zone 2 runs");
             Console.WriteLine("6. Show Personal records");
-            Console.WriteLine("7. Exit");
+            Console.WriteLine("7. Logout");
+            Console.WriteLine("8. Exit program");
             var choice = Console.ReadLine();
             switch (choice)
             {
@@ -56,7 +57,11 @@ public class Usage : World
                     break;
                 case "7":
                     running = false;
-                    login.LoginisLive();
+                    login.LoginisLive(0);
+                    break;
+                case "8":
+                    running = false;
+                    login.LoginisLive(1);
                     break;
                 default:
                     Console.WriteLine("Invalid option. Try again.");

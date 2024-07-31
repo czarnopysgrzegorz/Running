@@ -6,6 +6,6 @@ class Program
     {
         World a = new World();
         Login login = new Login();
-        login.LoginisLive();
+        login.LoginisLive(0);
     }
 }

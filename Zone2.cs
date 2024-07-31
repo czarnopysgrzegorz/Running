@@ -21,6 +21,7 @@ public class Zone2 : Run
         AddDate(this);
         owner.Runs.Add(this);
         AddRunToFile();
+        owner.Rank.UpdateElo(this);
     }
     
     public override string ToString()
