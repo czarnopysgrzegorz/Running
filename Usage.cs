@@ -32,8 +32,9 @@ public class Usage : World
             Console.WriteLine("4. Show all normal runs");
             Console.WriteLine("5. Show all zone 2 runs");
             Console.WriteLine("6. Show Personal records");
-            Console.WriteLine("7. Logout");
-            Console.WriteLine("8. Exit program");
+            Console.WriteLine("7. Show Elo representation of a run");
+            Console.WriteLine("8. Logout");
+            Console.WriteLine("9. Exit program");
             var choice = Console.ReadLine();
             switch (choice)
             {
@@ -56,10 +57,16 @@ public class Usage : World
                     person.showPR();
                     break;
                 case "7":
+                    Console.WriteLine("Type elo");
+                    string e = Console.ReadLine();
+                    int elo = int.Parse(e);
+                    person.Rank.ShowEloRepresentationOfRuns();
+                    break;
+                case "8":
                     running = false;
                     login.LoginisLive(0);
                     break;
-                case "8":
+                case "9":
                     running = false;
                     login.LoginisLive(1);
                     break;

@@ -18,6 +18,7 @@ public class Normal : Run
         AddRunToFile();
         owner.PersonalBest.UpdatePR(owner, 0);
         owner.PersonalBest.CheckForPR(this, owner);
+        Console.WriteLine("----------------------------");
         owner.NormalRunAmount++;
     }
     public void AddNormal(Person owner)
@@ -28,8 +29,16 @@ public class Normal : Run
         AddBPM(this);
         AddDate(this);
         owner.Runs.Add(this);
-        owner.Rank.UpdateElo(this);
-        
+        int gain = owner.Rank.UpdateElo(this);
+        Console.WriteLine("----------------------------");
+        if (gain > -1)
+        {
+            Console.WriteLine($"+{gain}");
+        }
+        else
+        {
+            Console.WriteLine($"{gain}");
+        }
     }
 
     public override string ToString()

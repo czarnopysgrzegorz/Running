@@ -40,7 +40,6 @@ public class Person : World
     }
     public void AddRun(Person person)
     {
-        Rank.setOwnerForRank(person);
         int which = WhichRun();
         if (which == 1)
         {
@@ -55,6 +54,13 @@ public class Person : World
     }
     public void RemoveLastRun()
     {
+        Console.WriteLine("Are you sure you want to remove your last run? Press 0 to cancel or any button to proceed");
+        string inp = Console.ReadLine();
+        int so = int.Parse(inp);
+        if (so == 0)
+        {
+            return;
+        }
         if (Runs.Count > 1)
         {
             if (Runs.Last().IsZone2)
@@ -68,6 +74,7 @@ public class Person : World
             RemoveRunFromFile(this);
             Runs.RemoveAt(Runs.Count - 1);
             PersonalBest.UpdatePR(this, 1);
+            Rank.DownloadElo();
         }
         else
         {
@@ -146,5 +153,13 @@ public class Person : World
     public void showPR()
     {
         Console.WriteLine(PersonalBest.ToString());
+    }
+
+    public void ConsecutiveDays()
+    {
+        for (int i = 0; i < Runs.Count(); i++)
+        {
+            
+        }
     }
 }

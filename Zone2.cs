@@ -10,6 +10,7 @@ public class Zone2 : Run
         AddZone2(owner, personalBest);
         owner.PersonalBest.UpdatePR(owner, 0);
         owner.PersonalBest.CheckForPR(this, owner);
+        Console.WriteLine("----------------------------");
         owner.Zone2Amount++;
     }
 
@@ -21,7 +22,16 @@ public class Zone2 : Run
         AddDate(this);
         owner.Runs.Add(this);
         AddRunToFile();
-        owner.Rank.UpdateElo(this);
+        int gain = owner.Rank.UpdateElo(this);
+        Console.WriteLine("----------------------------");
+        if (gain > -1)
+        {
+            Console.WriteLine($"+{gain}");
+        }
+        else
+        {
+            Console.WriteLine($"{gain}");
+        }
     }
     
     public override string ToString()

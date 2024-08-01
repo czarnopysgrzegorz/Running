@@ -41,19 +41,8 @@ public class Rank : World
     {
         Division = "Undefined";
         Elo = 1000;
-        Normal normalRun = new Normal();
-        Zone2 zone2Run = new Zone2();
-        normalRun.Distance = 5;
-        normalRun.Time = 1890;
-        normalRun.AddPace(normalRun);
-        normalRun.MaxBPM = 185;
-        normalRun.IsZone2 = false;
-        ComparedNormalRun = normalRun;
-        zone2Run.Distance = 5;
-        zone2Run.Time = 2100;
-        zone2Run.AddPace(zone2Run);
-        zone2Run.IsZone2 = true;
-        ComparedZone2Run = zone2Run;
+        ComparedNormalRun = NormalRunRatingRepresentation(Elo);
+        ComparedZone2Run = Zone2RatingRepresentation(Elo);
     }
 
     public void setOwnerForRank(Person owner)
@@ -96,33 +85,16 @@ public class Rank : World
         }
         return pacDelta;
     }
-
-    public int BPMGain(Normal normal, Normal normal2)
-    {
-        int bpmDelta = normal.MaxBPM - normal2.MaxBPM; 
-        // Every 1 bpm more is 1 gain
-        if (bpmDelta == 0)
-        {
-            bpmDelta = 1;
-            return bpmDelta;
-        }
-
-        if (bpmDelta < 0)
-        {
-            bpmDelta = 0;
-        }
-        return bpmDelta;
-    }
-    public int CompareNormalGain(Normal normal, Normal normal2)
+    
+    public int GiveNormalGain(Normal normal, Normal normal2)
     {
         int gain = 0;
         gain += DistanceGain(normal, normal2);
         gain += TimeGain(normal, normal2);
         gain += PaceGain(normal, normal2);
-        gain += BPMGain(normal, normal2);
         return gain;
     }
-    public int CompareZone2Gain(Zone2 zone2, Zone2 zone22)
+    public int GiveZone2Gain(Zone2 zone2, Zone2 zone22)
     {
         int gain = 0;
         gain += DistanceGain(zone2, zone22);
@@ -133,32 +105,93 @@ public class Rank : World
 
     public void UpdateComparedRun()
     {
-        if (Owner.Runs[Owner.Runs.Count - 1] is Zone2 zone2Run)
+        ComparedZone2Run = Zone2RatingRepresentation(Elo);
+        ComparedNormalRun = NormalRunRatingRepresentation(Elo);
+    }
+
+    public void DownloadElo()
+    {
+        if (Owner.Runs.Count > 0)
         {
-            Zone2 zone2 = new Zone2();
-            zone2 = zone2Run;
-            ComparedZone2Run = zone2;
-        }
-        if (Owner.Runs[Owner.Runs.Count - 1] is Normal normalRun)
-        {
-            Normal normal = new Normal();
-            normal = normalRun;
-            ComparedNormalRun = normal;
+            for (int i = 0; i < Owner.Runs.Count; i++)
+            {
+                UpdateElo(Owner.Runs[i]);
+            }
         }
     }
-    public void UpdateElo(Run run)
+    public int UpdateElo(Run run)
     {
         int gain = 0;
         if (run is Normal normalRun)
         {
-            gain = CompareNormalGain(normalRun, ComparedNormalRun);
+            gain = GiveNormalGain(normalRun, ComparedNormalRun);
         }
 
         if (run is Zone2 zone2Run)
         {
-            gain = CompareZone2Gain(zone2Run, ComparedZone2Run);
+            gain = GiveZone2Gain(zone2Run, ComparedZone2Run);
         }
         Elo = Elo + (gain * 3);
         UpdateComparedRun();
+        return gain * 3;
+    }
+
+    public Normal NormalRunRatingRepresentation(int elo)
+    {
+        Normal representation = new Normal();
+        
+        double B = Math.Log(8.4) / 1000;
+        double A = 5 / 8.4;
+        A =  A * Math.Exp(B * elo);
+        A = Math.Round(A);
+        double distance = A;
+        
+        double C = -Math.Log(4) / 1900;
+        double D = 720 * Math.Pow(4, 100.0 / 1900.0);
+        double output = D * Math.Exp(C * elo);
+        output = Math.Round(output);
+        int pace = (int)output;
+
+        double time = distance * pace;
+        Math.Round(time);
+        int sTime = (int)time;
+        representation.Distance = distance;
+        representation.Pace = pace;
+        representation.Time = sTime;
+        return representation;
+    }
+
+    public Zone2 Zone2RatingRepresentation(int elo)
+    {
+        Zone2 representation = new Zone2();
+        
+        double B = Math.Log(8.4) / 1000;
+        double A = 5 / 8.4;
+        A =  A * Math.Exp(B * elo);
+        A = Math.Round(A);
+        double distance = A;
+        
+        double C = Math.Log(0.5) / 1000;
+        double D = 960;
+        double output;
+        output = D * Math.Exp(C * elo);
+        output = Math.Round(output);
+        int pace = (int)output;
+        
+        double time = distance * pace;
+        Math.Round(time);
+        int sTime = (int)time;
+        
+        representation.Distance = distance;
+        representation.Pace = pace;
+        representation.Time = sTime;
+        
+        return representation;
+    }
+
+    public void ShowEloRepresentationOfRuns()
+    {
+        Console.WriteLine(ComparedNormalRun.ToString());
+        Console.WriteLine(ComparedZone2Run.ToString());
     }
 }

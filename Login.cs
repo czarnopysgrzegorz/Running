@@ -33,7 +33,9 @@ public class Login : World
                     Person a = LogAsPerson();
                     if (a != null)
                     {
+                        a.Rank.setOwnerForRank(a);
                         a.PersonalBest.UpdatePR(a, 0);
+                        a.Rank.DownloadElo();
                         running = false;
                         Usage use = new Usage();
                         use.UseIsLive(a, this);
