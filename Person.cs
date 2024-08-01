@@ -56,12 +56,11 @@ public class Person : World
     {
         Console.WriteLine("Are you sure you want to remove your last run? Press 0 to cancel or any button to proceed");
         string inp = Console.ReadLine();
-        int so = int.Parse(inp);
-        if (so == 0)
+        if (inp.CompareTo("0") == 0)
         {
             return;
         }
-        if (Runs.Count > 1)
+        if (Runs.Count > 0)
         {
             if (Runs.Last().IsZone2)
             {
