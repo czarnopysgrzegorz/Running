@@ -39,6 +39,12 @@ public class PR : World
         get { return bpm; }
         set { bpm = value; }
     }
+    private int concecutive;
+    public int Concecutive
+    {
+        get { return concecutive; }
+        set { concecutive = value; }
+    }
     public void UpdatePR(Person owner, int removed)
     {
         int firstRun = 0;
@@ -52,6 +58,7 @@ public class PR : World
             updatedPR.Pace = 0;
             updatedPR.Zone2Pace = 0;
             updatedPR.BPM = 0;
+            updatedPR.concecutive = 0;
             owner.PersonalBest = updatedPR;
             return;
         }
@@ -165,10 +172,18 @@ public class PR : World
                     Console.WriteLine("Congrats! This is your fastest zone 2 pace!");
                 }
             }
+            if (owner.ConsecutiveDays() > 1 && owner.ConsecutiveDays() == owner.PersonalBest.Concecutive)
+            {
+                Console.WriteLine($"Congrats! This is your longest streak of {owner.PersonalBest.Concecutive} days!");
+            }
+            if (owner.ConsecutiveDays() > 1 && owner.ConsecutiveDays() != owner.PersonalBest.Concecutive)
+            {
+                Console.WriteLine($"This is your {owner.ConsecutiveDays()}th day in a row!");
+            }
         }
     }
     public override string ToString()
     {
-        return $"PRs: Distance: {ConvertDistanceToString(Distance)} Time: {ConvertTimeToString(ConvertTimeToMinutes(Time))} Pace: {ConvertTimeToString(ConvertTimeToMinutes(Pace))} Zone 2 Pace: {ConvertTimeToString(ConvertTimeToMinutes(Zone2Pace))} Max BPM: {BPM}";
+        return $"PRs: Distance: {ConvertDistanceToString(Distance)} Time: {ConvertTimeToString(ConvertTimeToMinutes(Time))} Pace: {ConvertTimeToString(ConvertTimeToMinutes(Pace))} Zone 2 Pace: {ConvertTimeToString(ConvertTimeToMinutes(Zone2Pace))} Max BPM: {BPM} Longest streak: {Concecutive}";
     }
 }

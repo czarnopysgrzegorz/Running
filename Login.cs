@@ -36,6 +36,7 @@ public class Login : World
                         a.Rank.setOwnerForRank(a);
                         a.PersonalBest.UpdatePR(a, 0);
                         a.Rank.DownloadElo();
+                        a.ConsecutiveDays();
                         running = false;
                         Usage use = new Usage();
                         use.UseIsLive(a, this);

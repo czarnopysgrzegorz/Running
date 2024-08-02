@@ -1,3 +1,5 @@
+using System.Buffers;
+
 namespace Running;
 
 public class Person : World
@@ -154,11 +156,53 @@ public class Person : World
         Console.WriteLine(PersonalBest.ToString());
     }
 
-    public void ConsecutiveDays()
+    public int ConsecutiveDays()
     {
-        for (int i = 0; i < Runs.Count(); i++)
+        int conc = 0;
+        if (Runs.Count == 0)
         {
-            
+            PersonalBest.Concecutive = 0;
+            return 0;
         }
+        if (Runs.Count == 1)
+        {
+            PersonalBest.Concecutive = 1;
+            return 1;
+        }
+        if (Runs.Count > 1)
+        {
+            for (int i = 1; i < Runs.Count; i++)
+            {
+                if (Runs[i].Date.DayOfYear - Runs[i - 1].Date.DayOfYear == 1)
+                {
+                    if (conc == 0)
+                    {
+                        conc = 1;
+                    }
+                    conc++;
+                    if (i == Runs.Count - 1)
+                    {
+                        if (conc > PersonalBest.Concecutive)
+                        {
+                            PersonalBest.Concecutive = conc;
+                        }
+                        return conc;
+                    }
+                }
+                if (Runs[i].Date.DayOfYear - Runs[i - 1].Date.DayOfYear > 1)
+                {
+                    if (conc > PersonalBest.Concecutive)
+                    {
+                        PersonalBest.Concecutive = conc;
+                    }
+                    if (i == Runs.Count - 1)
+                    {
+                        return 1;
+                    }
+                    conc = 0;
+                }
+            }
+        }
+        return 1;
     }
 }
